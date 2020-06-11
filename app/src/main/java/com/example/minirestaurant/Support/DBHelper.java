@@ -9,8 +9,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import android.widget.Toast;
 
+import com.example.minirestaurant.Model.CommentInfo;
+import com.example.minirestaurant.Model.OrderInfo;
+import com.example.minirestaurant.Model.ProductInfo;
+import com.example.minirestaurant.Model.ReportInfo;
 import com.example.minirestaurant.Model.UserInfo;
 
+import org.w3c.dom.Comment;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -298,12 +305,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Dictionary ExecuteSQLCommand(SQLCommandType commandType, String commandSQL) {
+    public Dictionary ExecuteSQLCommand(TableType tableTpe, SQLCommandType commandType, String commandSQL) {
 
-        // todo -> create, updrade 全部五個table都要
-        // todo -> 先把功能寫起來再來作ui
-        // todo -> 我想做的事情是，有個 fun (select, insert ...) 直接過來執行
-        // todo -> 然後我可以直接去取得我要什麼table? 有哪些column ? 這我只要assign值之後然後丟上面的command執行就可以了
+        SQLiteDatabase myLocalDB ;
+        Cursor myCursor ;
 
         Dictionary resultDict = new Hashtable() ;
 
@@ -312,10 +317,11 @@ public class DBHelper extends SQLiteOpenHelper {
             // INSERT, UPDATE, DELETE
             case Execute:
 
+                myLocalDB = this.getWritableDatabase() ;
+
                 // Determine Whether this SQL Command is Success of Not
                 try {
 
-                    SQLiteDatabase myLocalDB = this.getWritableDatabase() ;
                     myLocalDB.execSQL(commandSQL) ;
 
                     resultDict.put(successDictKey, true) ;
@@ -326,6 +332,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
                 }
 
+                myLocalDB.close() ;
                 break ;
 
             // SELECT
@@ -333,7 +340,126 @@ public class DBHelper extends SQLiteOpenHelper {
             // Aggregate Functions (COUNT, SUM, MAX, MIN, AVG , HAVING)
             case Query:
 
+                myLocalDB = this.getReadableDatabase() ;
 
+                myCursor = myLocalDB.rawQuery(commandSQL, null) ;
+
+                switch (tableTpe) {
+                    case User:
+
+                        // Columns of UserInfo Table
+                        // 1. uID INTEGER PRIMARY KEY AUTOINCREMENT
+                        // 2. Name VARCHAR(255)
+                        // 3. Age INTEGER
+                        // 4. Gender VARCHAR(255)
+
+                        ArrayList<UserInfo> totalUserInfos = new ArrayList<UserInfo>() ;
+
+                        // Read Data by All Rows from Table
+                        while (myCursor.moveToNext()) {
+
+                            UserInfo eachUserInfo = new UserInfo() ;
+                            eachUserInfo.init(myCursor.getInt(0), myCursor.getString(1), myCursor.getInt(2), myCursor.getString(3)) ;
+
+                            totalUserInfos.add(eachUserInfo) ;
+                        }
+
+                        resultDict.put(dataDictKey, totalUserInfos) ;
+                        break ;
+
+                    case Product:
+
+                        // Columns of ProductInfo Table
+                        // 1. pID INTEGER PRIMARY KEY AUTOINCREMENT
+                        // 2. Name VARCHAR(255)
+                        // 3. Price INTEGER
+                        // 4. ColdOrHot VARCHAR(255)
+
+                        ArrayList<ProductInfo> totalProductInfos = new ArrayList<ProductInfo>() ;
+
+                        // Read Data by All Rows from Table
+                        while (myCursor.moveToNext()) {
+
+                            ProductInfo eachProductInfo = new ProductInfo() ;
+                            eachProductInfo.init(myCursor.getInt(0), myCursor.getString(1), myCursor.getInt(2), myCursor.getString(3)) ;
+
+                            totalProductInfos.add(eachProductInfo) ;
+                        }
+
+                        resultDict.put(dataDictKey, totalProductInfos) ;
+                        break ;
+
+                    case Order:
+
+                        // Columns of OrderInfo Table
+                        // 1. oID INTEGER PRIMARY KEY AUTOINCREMENT
+                        // 2. uID INTEGER
+                        // 3. pID INTEGER
+                        // 4. Amount INTEGER
+                        // 5 .Price INTEGER
+
+                        ArrayList<OrderInfo> totalOrderInfos = new ArrayList<OrderInfo>() ;
+
+                        // Read Data by All Rows from Table
+                        while (myCursor.moveToNext()) {
+
+                            OrderInfo eachOrderInfo = new OrderInfo() ;
+                            eachOrderInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getInt(2), myCursor.getInt(3), myCursor.getInt(4)) ;
+
+                            totalOrderInfos.add(eachOrderInfo) ;
+                        }
+
+                        resultDict.put(dataDictKey, totalOrderInfos) ;
+                        break ;
+
+                    case Comment:
+
+                        // Columns of CommentInfo Table
+                        // 1. cID INTEGER PRIMARY KEY AUTOINCREMENT
+                        // 2. uID INTEGER
+                        // 3. Date VARCHAR(255)
+                        // 4. Content VARCHAR(255)
+                        // 5. Rating INTEGER
+
+                        ArrayList<CommentInfo> totalCommentInfos = new ArrayList<CommentInfo>() ;
+
+                        // Read Data by All Rows from Table
+                        while (myCursor.moveToNext()) {
+
+                            CommentInfo eachCommentInfo = new CommentInfo() ;
+                            eachCommentInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getString(2), myCursor.getString(3), myCursor.getInt(4)) ;
+
+                            totalCommentInfos.add(eachCommentInfo) ;
+                        }
+
+                        resultDict.put(dataDictKey, totalCommentInfos) ;
+                        break ;
+
+                    case Report:
+
+                        // Columns of ReportInfo Table
+                        // 1. rID INTEGER PRIMARY KEY AUTOINCREMENT
+                        // 2. uID INTEGER
+                        // 3. cID INTEGER
+                        // 4. Date VARCHAR(255)
+
+                        ArrayList<ReportInfo> totalReportInfos = new ArrayList<ReportInfo>() ;
+
+                        // Read Data by All Rows from Table
+                        while (myCursor.moveToNext()) {
+
+                            ReportInfo eachReportInfo = new ReportInfo() ;
+                            eachReportInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getInt(2), myCursor.getString(3)) ;
+
+                            totalReportInfos.add(eachReportInfo) ;
+                        }
+
+                        resultDict.put(dataDictKey, totalReportInfos) ;
+                        break ;
+                }
+
+                myCursor.close() ;
+                myLocalDB.close() ;
                 break ;
         }
 
