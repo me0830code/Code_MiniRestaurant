@@ -1,7 +1,9 @@
-package com.example.minirestaurant;
+package com.example.minirestaurant.Controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.minirestaurant.R;
 
 public class MainActivity extends AppCompatActivity {
 
