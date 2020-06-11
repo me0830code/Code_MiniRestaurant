@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.minirestaurant.Model.CommentInfo;
@@ -15,35 +16,32 @@ import com.example.minirestaurant.Model.ProductInfo;
 import com.example.minirestaurant.Model.ReportInfo;
 import com.example.minirestaurant.Model.UserInfo;
 
-import org.w3c.dom.Comment;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-enum SQLCommandType {
-
-    Execute,
-    Query
-}
-
-enum TableType {
-
-    User("UserInfo"),
-    Product("ProductInfo"),
-    Order("OrderInfo"),
-    Comment("CommentInfo"),
-    Report("ReportInfo") ;
-
-    public final String tableName ;
-
-    TableType(String name) {
-        this.tableName = name ;
-    }
-}
-
 public class DBHelper extends SQLiteOpenHelper {
+
+    public enum SQLCommandType {
+
+        Execute,
+        Query
+    }
+
+    public enum TableType {
+
+        User("UserInfo"),
+        Product("ProductInfo"),
+        Order("OrderInfo"),
+        Comment("CommentInfo"),
+        Report("ReportInfo") ;
+
+        public final String tableName ;
+
+        TableType(String name) {
+            this.tableName = name ;
+        }
+    }
 
     private Context nowContext ;
 
