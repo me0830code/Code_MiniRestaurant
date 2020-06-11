@@ -9,8 +9,8 @@ public class UserInfo {
     private String userGender ;
 
     // Setting uID & userName & userAge & userGender
-    public void init(int id, String name, int age, String gender) {
-        this.uID = id ;
+    public void init(int uID, String name, int age, String gender) {
+        this.uID = uID ;
         this.userName = name ;
         this.userAge = age ;
         this.userGender = gender ;

@@ -9,8 +9,8 @@ public class ProductInfo {
     private String productColdOrHot ;
 
     // Setting pID & productName & productPrice & productColdOrHot
-    public void init(int id, String name, int price, String ColdOrHot) {
-        this.pID = id ;
+    public void init(int pID, String name, int price, String ColdOrHot) {
+        this.pID = pID ;
         this.productName = name ;
         this.productPrice = price ;
         this.productColdOrHot = ColdOrHot ;
