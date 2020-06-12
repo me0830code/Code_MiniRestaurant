@@ -4,13 +4,15 @@ package com.example.minirestaurant.Model;
 public class ProductInfo {
 
     private int pID ;
+    private int mID ;
     private String productName ;
     private int productPrice ;
     private String productColdOrHot ;
 
-    // Setting pID & productName & productPrice & productColdOrHot
-    public void init(int pID, String name, int price, String ColdOrHot) {
+    // Setting pID & mID & productName & productPrice & productColdOrHot
+    public void init(int pID, int mID, String name, int price, String ColdOrHot) {
         this.pID = pID ;
+        this.mID = mID ;
         this.productName = name ;
         this.productPrice = price ;
         this.productColdOrHot = ColdOrHot ;
@@ -19,6 +21,11 @@ public class ProductInfo {
     // Read productID
     public int GetProductID() {
         return this.pID ;
+    }
+
+    // Read manufacturerID
+    public int GetManufacturerID() {
+        return this.mID ;
     }
 
     // Read productName
