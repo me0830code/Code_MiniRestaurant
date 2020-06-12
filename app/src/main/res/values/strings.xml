@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">MiniRestaurant</string>
+    <string name = "app_name">MiniRestaurant</string>
+
+    <!-- Button Title For Every Feature -->
+    <string name = "buttonManual">Using Manual</string>
+    <string name = "buttonSelect">Using Select</string>
+    <string name = "buttonInsert">Using Insert</string>
+    <string name = "buttonUpdate">Using Update</string>
+    <string name = "buttonDelete">Using Delete</string>
+    <string name = "buttonNested">Using Nested</string>
+    <string name = "buttonAggregate">Using Aggregate</string>
 </resources>
