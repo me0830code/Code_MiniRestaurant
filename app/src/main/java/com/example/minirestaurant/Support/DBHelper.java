@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.example.minirestaurant.Model.CommentInfo;
+import com.example.minirestaurant.Model.ManufacturerInfo;
 import com.example.minirestaurant.Model.OrderInfo;
 import com.example.minirestaurant.Model.ProductInfo;
 import com.example.minirestaurant.Model.ReportInfo;
@@ -30,6 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         User("UserInfo"),
         Product("ProductInfo"),
+        Manufacturer("ManufacturerInfo"),
         Order("OrderInfo"),
         Comment("CommentInfo"),
         Report("ReportInfo") ;
@@ -47,14 +49,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String successDictKey = "Success" ;
     public final String dataDictKey = "Data" ;
 
-    // --------------------- Database Setting      ---------------------
+    // --------------------- Database Setting           ---------------------
 
     // Database name & version
     private static final String databaseName = "LocalDB" ;
     private static final int databaseVersion = 1 ;
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-    // --------------------- User Table Setting    ---------------------
+    // --------------------- User Table Setting         ---------------------
 
     // User Table Name
     private final String userTableName = "UserInfo" ;
@@ -78,9 +80,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // DROP TABLE IF EXISTS UserInfo ;
     private final String deleteUserTableSQL = "DROP TABLE IF EXISTS " + this.userTableName + " ; " ;
 
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-    // --------------------- Product Table Setting ---------------------
+    // --------------------- Product Table Setting      ---------------------
 
     // Product Table Name
     private final String productTableName = "ProductInfo" ;
@@ -92,9 +94,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String productColdOrHot = "ColdOrHot" ;
 
     // SQL Script for Creating Product Table
-    // CREATE TABLE IF NOT EXISTS ProductInfo ( pID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(255), Price INTEGER, ColdOrHot VARCHAR(255) ) ;
+    // CREATE TABLE IF NOT EXISTS ProductInfo ( pID INTEGER PRIMARY KEY AUTOINCREMENT, mID INTEGER, Name VARCHAR(255), Price INTEGER, ColdOrHot VARCHAR(255) ) ;
     private final String createProductTableSQL = "CREATE TABLE IF NOT EXISTS " + this.productTableName +
             " ( " + this.pID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + this.mID + " INTEGER, "
             + this.productName + " VARCHAR(255), "
             + this.productPrice + " INTEGER, "
             + this.productColdOrHot + " VARCHAR(255)" +
@@ -104,9 +107,35 @@ public class DBHelper extends SQLiteOpenHelper {
     // DROP TABLE IF EXISTS ProductInfo ;
     private final String deleteProductTableSQL = "DROP TABLE IF EXISTS " + this.productTableName + " ; " ;
 
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-    // --------------------- Order Table Setting   ---------------------
+    // --------------------- Manufacturer Table Setting ---------------------
+
+    // Manufacturer Table Name
+    private final String manufacturerTableName = "ManufacturerInfo" ;
+
+    // Columns for Creating Manufacturer Table
+    private final String mID = "mID" ;
+    private final String manufacturerName = "Name" ;
+    private final String manufacturerCountry = "Country" ;
+    private final String manufacturerPeopleNum = "PeopleNum" ;
+
+    // SQL Script for Creating Manufacturer Table
+    // CREATE TABLE IF NOT EXISTS ManufacturerInfo ( mID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(255), Country VARCHAR(255), PeopleNum INTEGER ) ;
+    private final String createManufacturerTableSQL = "CREATE TABLE IF NOT EXISTS " + this.manufacturerTableName +
+            " ( " + this.mID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + this.manufacturerName + " VARCHAR(255), "
+            + this.manufacturerCountry + " VARCHAR(255), "
+            + this.manufacturerPeopleNum + " INTEGER" +
+            " ) ; " ;
+
+    // SQL Script for Deleting Manufacturer Table
+    // DROP TABLE IF EXISTS ManufacturerInfo ;
+    private final String deleteManufacturerTableSQL = "DROP TABLE IF EXISTS " + this.manufacturerTableName + " ; " ;
+
+    // ----------------------------------------------------------------------
+
+    // --------------------- Order Table Setting        ---------------------
 
     // Order Table Name
     private final String orderTableName = "OrderInfo" ;
@@ -130,9 +159,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // DROP TABLE IF EXISTS OrderInfo ;
     private final String deleteOrderTableSQL = "DROP TABLE IF EXISTS " + this.orderTableName + " ; " ;
 
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-    // --------------------- Comment Table Setting ---------------------
+    // --------------------- Comment Table Setting      ---------------------
 
     // Comment Table Name
     private final String commentTableName = "CommentInfo" ;
@@ -157,31 +186,30 @@ public class DBHelper extends SQLiteOpenHelper {
     // DROP TABLE IF EXISTS CommentInfo ;
     private final String deleteCommentTableSQL = "DROP TABLE IF EXISTS " + this.commentTableName + " ; " ;
 
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-    // --------------------- Report Table Setting  ---------------------
+    // --------------------- Report Table Setting       ---------------------
 
     // Report Table Name
     private final String reportTableName = "ReportInfo" ;
 
     // Columns for Creating Report Table
-    private final String rID = "rID" ;
     private final String reportDate = "Date" ;
 
     // SQL Script for Creating Report Table
-    // CREATE TABLE IF NOT EXISTS ReportInfo ( rID INTEGER PRIMARY KEY AUTOINCREMENT, uID INTEGER, cID INTEGER, Date VARCHAR(255) ) ;
+    // CREATE TABLE IF NOT EXISTS ReportInfo ( cID INTEGER, uID INTEGER, Date VARCHAR(255), PRIMARY KEY ( cID , uID ) ) ;
     private final String createReportTableSQL = "CREATE TABLE IF NOT EXISTS " + this.reportTableName +
-            " ( " + this.rID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            " ( " + this.cID + " INTEGER, "
             + this.uID + " INTEGER, "
-            + this.cID + " INTEGER, "
-            + this.reportDate + " VARCHAR(255)" +
+            + this.reportDate + " VARCHAR(255), "
+            + "PRIMARY KEY ( " + this.cID + " , " + this.uID + " )" +
             " ) ; " ;
 
     // SQL Script for Deleting Report Table
     // DROP TABLE IF EXISTS ReportInfo ;
     private final String deleteReportTableSQL = "DROP TABLE IF EXISTS " + this.reportTableName + " ; " ;
 
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
     public DBHelper(Context context) {
         super(context, databaseName, null, databaseVersion) ;
@@ -214,7 +242,17 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(this.nowContext, "Create Product Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
-        // 3. Order Table
+        // 3. Manufacturer Table
+        // Determine Whether this SQL Command is Success of Not
+        try {
+
+            sqLiteDatabase.execSQL(this.createManufacturerTableSQL) ;
+        } catch ( Exception e ) {
+
+            Toast.makeText(this.nowContext, "Create Manufacturer Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
+        }
+
+        // 4. Order Table
         // Determine Whether this SQL Command is Success of Not
         try {
 
@@ -224,7 +262,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(this.nowContext, "Create Order Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
-        // 4. Comment Table
+        // 5. Comment Table
         // Determine Whether this SQL Command is Success of Not
         try {
 
@@ -234,7 +272,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(this.nowContext, "Create Comment Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
-        // 5. Report Table
+        // 6. Report Table
         // Determine Whether this SQL Command is Success of Not
         try {
 
@@ -270,7 +308,17 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(this.nowContext, "Delete Product Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
-        // 3. Order Table
+        // 3. Manufacturer Table
+        // Determine Whether this SQL Command is Success of Not
+        try {
+
+            sqLiteDatabase.execSQL(this.deleteManufacturerTableSQL) ;
+        } catch ( Exception e ) {
+
+            Toast.makeText(this.nowContext, "Delete Manufacturer Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
+        }
+
+        // 4. Order Table
         // Determine Whether this SQL Command is Success of Not
         try {
 
@@ -280,7 +328,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(this.nowContext, "Delete Order Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
-        // 4. Comment Table
+        // 5. Comment Table
         // Determine Whether this SQL Command is Success of Not
         try {
 
@@ -290,7 +338,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Toast.makeText(this.nowContext, "Delete Comment Table Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
         }
 
-        // 5. Report Table
+        // 6. Report Table
         // Determine Whether this SQL Command is Success of Not
         try {
 
@@ -367,9 +415,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
                         // Columns of ProductInfo Table
                         // 1. pID INTEGER PRIMARY KEY AUTOINCREMENT
-                        // 2. Name VARCHAR(255)
-                        // 3. Price INTEGER
-                        // 4. ColdOrHot VARCHAR(255)
+                        // 2. mID INTEGER
+                        // 3. Name VARCHAR(255)
+                        // 4. Price INTEGER
+                        // 5. ColdOrHot VARCHAR(255)
 
                         ArrayList<ProductInfo> totalProductInfos = new ArrayList<ProductInfo>() ;
 
@@ -377,12 +426,34 @@ public class DBHelper extends SQLiteOpenHelper {
                         while (myCursor.moveToNext()) {
 
                             ProductInfo eachProductInfo = new ProductInfo() ;
-                            eachProductInfo.init(myCursor.getInt(0), myCursor.getString(1), myCursor.getInt(2), myCursor.getString(3)) ;
+                            eachProductInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getString(2), myCursor.getInt(3), myCursor.getString(4)) ;
 
                             totalProductInfos.add(eachProductInfo) ;
                         }
 
                         resultDict.put(dataDictKey, totalProductInfos) ;
+                        break ;
+
+                    case Manufacturer:
+
+                        // Columns of Manufacturer Table
+                        // 1. mID INTEGER PRIMARY KEY AUTOINCREMENT
+                        // 2. Name VARCHAR(255)
+                        // 3. Country VARCHAR(255)
+                        // 4. PeopleNum INTEGER
+
+                        ArrayList<ManufacturerInfo> totalManufacturerInfos = new ArrayList<ManufacturerInfo>() ;
+
+                        // Read Data by All Rows from Table
+                        while (myCursor.moveToNext()) {
+
+                            ManufacturerInfo eachManufacturerInfo = new ManufacturerInfo() ;
+                            eachManufacturerInfo.init(myCursor.getInt(0), myCursor.getString(1), myCursor.getString(2), myCursor.getInt(3)) ;
+
+                            totalManufacturerInfos.add((eachManufacturerInfo)) ;
+                        }
+
+                        resultDict.put(dataDictKey, totalManufacturerInfos) ;
                         break ;
 
                     case Order:
@@ -392,7 +463,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         // 2. uID INTEGER
                         // 3. pID INTEGER
                         // 4. Amount INTEGER
-                        // 5 .Price INTEGER
+                        // 5. Price INTEGER
 
                         ArrayList<OrderInfo> totalOrderInfos = new ArrayList<OrderInfo>() ;
 
@@ -434,10 +505,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     case Report:
 
                         // Columns of ReportInfo Table
-                        // 1. rID INTEGER PRIMARY KEY AUTOINCREMENT
-                        // 2. uID INTEGER
-                        // 3. cID INTEGER
-                        // 4. Date VARCHAR(255)
+                        // 1. cID INTEGER PRIMARY KEY
+                        // 2. uID INTEGER PRIMARY KEY
+                        // 3. Date VARCHAR(255)
 
                         ArrayList<ReportInfo> totalReportInfos = new ArrayList<ReportInfo>() ;
 
@@ -445,7 +515,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         while (myCursor.moveToNext()) {
 
                             ReportInfo eachReportInfo = new ReportInfo() ;
-                            eachReportInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getInt(2), myCursor.getString(3)) ;
+                            eachReportInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getString(2)) ;
 
                             totalReportInfos.add(eachReportInfo) ;
                         }
