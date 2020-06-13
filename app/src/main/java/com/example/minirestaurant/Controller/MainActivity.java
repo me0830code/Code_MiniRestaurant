@@ -21,20 +21,20 @@ import java.util.Dictionary;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    enum FunctionType {
+    enum ModeType {
 
         Manual(""),
         Select("Select"),
-        Insert("Insert"),
+        Insert("Insert into"),
         Update("Update"),
-        Delete("Delete"),
-        Nested("Select"),
-        Aggregate("Select") ;
+        Delete("Delete from"),
+        Nested(""),
+        Aggregate("") ;
 
-        public final String functionName ;
+        public final String modeSQLName ;
 
-        FunctionType(String functionName) {
-            this.functionName = functionName ;
+        ModeType(String modeSQLName) {
+            this.modeSQLName = modeSQLName ;
         }
     }
 
@@ -108,37 +108,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
 
             case R.id.buttonManual : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Manual) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Manual) ;
                 break ;
             }
 
             case R.id.buttonSelect : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Select) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Select) ;
                 break ;
             }
 
             case R.id.buttonInsert : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Insert) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Insert) ;
                 break ;
             }
 
             case R.id.buttonUpdate : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Update) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Update) ;
                 break ;
             }
 
             case R.id.buttonDelete : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Delete) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Delete) ;
                 break ;
             }
 
             case R.id.buttonNested : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Nested) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Nested) ;
                 break ;
             }
 
             case R.id.buttonAggregate : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Aggregate) ;
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Aggregate) ;
                 break ;
             }
         }

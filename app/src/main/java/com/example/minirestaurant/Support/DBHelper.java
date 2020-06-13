@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.minirestaurant.Model.CommentInfo;
@@ -22,7 +23,7 @@ import java.util.Hashtable;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    enum DictionaryKeyType {
+    public enum DictionaryKeyType {
 
         SuccessKey("Success"),
         DataKey("Data") ;
@@ -34,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    enum SQLCommandType {
+    public enum SQLCommandType {
 
         Execute,
         Query
@@ -365,7 +366,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                                       TableType.Order, TableType.Comment, TableType.Report)) ;
     }
 
-    public Dictionary ExecuteSQLCommand(TableType tableTpe, SQLCommandType commandType, String commandSQL) {
+    public Dictionary ExecuteSQLCommand(TableType tableType, SQLCommandType commandType, String commandSQL) {
 
         SQLiteDatabase myLocalDB ;
         Cursor myCursor ;
@@ -404,7 +405,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 myCursor = myLocalDB.rawQuery(commandSQL, null) ;
 
-                switch (tableTpe) {
+                switch (tableType) {
                     case User:
 
                         // Columns of UserInfo Table
@@ -418,11 +419,17 @@ public class DBHelper extends SQLiteOpenHelper {
                         // Read Data by All Rows from Table
                         while (myCursor.moveToNext()) {
 
+                            String thisUID =  myCursor.getColumnIndex(uID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(uID))) : "" ;
+                            String thisName =  myCursor.getColumnIndex(userName) >= 0 ? myCursor.getString(myCursor.getColumnIndex(userName)) : "" ;
+                            String thisAge =  myCursor.getColumnIndex(userAge) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(userAge))) : "" ;
+                            String thisGender =  myCursor.getColumnIndex(userGender) >= 0 ? myCursor.getString(myCursor.getColumnIndex(userGender)) : "" ;
+
                             UserInfo eachUserInfo = new UserInfo() ;
-                            eachUserInfo.init(myCursor.getInt(0), myCursor.getString(1), myCursor.getInt(2), myCursor.getString(3)) ;
+                            eachUserInfo.init(thisUID, thisName, thisAge, thisGender) ;
 
                             totalUserInfos.add(eachUserInfo) ;
                         }
+
 
                         resultDict.put(DictionaryKeyType.DataKey, totalUserInfos) ;
                         break ;
@@ -441,8 +448,14 @@ public class DBHelper extends SQLiteOpenHelper {
                         // Read Data by All Rows from Table
                         while (myCursor.moveToNext()) {
 
+                            String thisPID =  myCursor.getColumnIndex(pID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(pID))) : "" ;
+                            String thisMID =  myCursor.getColumnIndex(mID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(mID))) : "" ;
+                            String thisName =  myCursor.getColumnIndex(productName) >= 0 ? myCursor.getString(myCursor.getColumnIndex(productName)) : "" ;
+                            String thisPrice =  myCursor.getColumnIndex(productPrice) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(productPrice))) : "" ;
+                            String thisColdOrHot =  myCursor.getColumnIndex(productColdOrHot) >= 0 ? myCursor.getString(myCursor.getColumnIndex(productColdOrHot)) : "" ;
+
                             ProductInfo eachProductInfo = new ProductInfo() ;
-                            eachProductInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getString(2), myCursor.getInt(3), myCursor.getString(4)) ;
+                            eachProductInfo.init(thisPID, thisMID, thisName, thisPrice, thisColdOrHot) ;
 
                             totalProductInfos.add(eachProductInfo) ;
                         }
@@ -463,8 +476,13 @@ public class DBHelper extends SQLiteOpenHelper {
                         // Read Data by All Rows from Table
                         while (myCursor.moveToNext()) {
 
+                            String thisMID =  myCursor.getColumnIndex(mID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(mID))) : "" ;
+                            String thisName =  myCursor.getColumnIndex(manufacturerName) >= 0 ? myCursor.getString(myCursor.getColumnIndex(manufacturerName)) : "" ;
+                            String thisCountry =  myCursor.getColumnIndex(manufacturerCountry) >= 0 ? myCursor.getString(myCursor.getColumnIndex(manufacturerCountry)) : "" ;
+                            String thisPeopleNum =  myCursor.getColumnIndex(manufacturerPeopleNum) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(manufacturerPeopleNum))) : "" ;
+
                             ManufacturerInfo eachManufacturerInfo = new ManufacturerInfo() ;
-                            eachManufacturerInfo.init(myCursor.getInt(0), myCursor.getString(1), myCursor.getString(2), myCursor.getInt(3)) ;
+                            eachManufacturerInfo.init(thisMID, thisName, thisCountry, thisPeopleNum) ;
 
                             totalManufacturerInfos.add((eachManufacturerInfo)) ;
                         }
@@ -486,8 +504,14 @@ public class DBHelper extends SQLiteOpenHelper {
                         // Read Data by All Rows from Table
                         while (myCursor.moveToNext()) {
 
+                            String thisOID =  myCursor.getColumnIndex(oID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(oID))) : "" ;
+                            String thisUID =  myCursor.getColumnIndex(uID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(uID))) : "" ;
+                            String thisPID =  myCursor.getColumnIndex(pID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(pID))) : "" ;
+                            String thisAmount =  myCursor.getColumnIndex(productAmount) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(productAmount))) : "" ;
+                            String thisPrice =  myCursor.getColumnIndex(totalPrice) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(totalPrice))) : "" ;
+
                             OrderInfo eachOrderInfo = new OrderInfo() ;
-                            eachOrderInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getInt(2), myCursor.getInt(3), myCursor.getInt(4)) ;
+                            eachOrderInfo.init(thisOID, thisUID, thisPID, thisAmount, thisPrice) ;
 
                             totalOrderInfos.add(eachOrderInfo) ;
                         }
@@ -509,8 +533,14 @@ public class DBHelper extends SQLiteOpenHelper {
                         // Read Data by All Rows from Table
                         while (myCursor.moveToNext()) {
 
+                            String thisCID =  myCursor.getColumnIndex(cID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(cID))) : "" ;
+                            String thisUID =  myCursor.getColumnIndex(uID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(uID))) : "" ;
+                            String thisDate =  myCursor.getColumnIndex(commentDate) >= 0 ? myCursor.getString(myCursor.getColumnIndex(commentDate)) : "" ;
+                            String thisContent =  myCursor.getColumnIndex(commentContent) >= 0 ? myCursor.getString(myCursor.getColumnIndex(commentContent)) : "" ;
+                            String thisRating =  myCursor.getColumnIndex(commentRating) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(commentRating))) : "" ;
+
                             CommentInfo eachCommentInfo = new CommentInfo() ;
-                            eachCommentInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getString(2), myCursor.getString(3), myCursor.getInt(4)) ;
+                            eachCommentInfo.init(thisCID, thisUID, thisDate, thisContent, thisRating) ;
 
                             totalCommentInfos.add(eachCommentInfo) ;
                         }
@@ -530,8 +560,12 @@ public class DBHelper extends SQLiteOpenHelper {
                         // Read Data by All Rows from Table
                         while (myCursor.moveToNext()) {
 
+                            String thisCID =  myCursor.getColumnIndex(cID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(cID))) : "" ;
+                            String thisUID =  myCursor.getColumnIndex(uID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(uID))) : "" ;
+                            String thisDate =  myCursor.getColumnIndex(reportDate) >= 0 ? myCursor.getString(myCursor.getColumnIndex(reportDate)) : "" ;
+
                             ReportInfo eachReportInfo = new ReportInfo() ;
-                            eachReportInfo.init(myCursor.getInt(0), myCursor.getInt(1), myCursor.getString(2)) ;
+                            eachReportInfo.init(thisCID, thisUID, thisDate) ;
 
                             totalReportInfos.add(eachReportInfo) ;
                         }

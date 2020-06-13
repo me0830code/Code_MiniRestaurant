@@ -3,14 +3,14 @@ package com.example.minirestaurant.Model;
 // ProductInfo Model
 public class ProductInfo {
 
-    private int pID ;
-    private int mID ;
+    private String pID ;
+    private String mID ;
     private String productName ;
-    private int productPrice ;
+    private String productPrice ;
     private String productColdOrHot ;
 
     // Setting pID & mID & productName & productPrice & productColdOrHot
-    public void init(int pID, int mID, String name, int price, String ColdOrHot) {
+    public void init(String pID, String mID, String name, String price, String ColdOrHot) {
         this.pID = pID ;
         this.mID = mID ;
         this.productName = name ;
@@ -19,12 +19,12 @@ public class ProductInfo {
     }
 
     // Read productID
-    public int GetProductID() {
+    public String GetProductID() {
         return this.pID ;
     }
 
     // Read manufacturerID
-    public int GetManufacturerID() {
+    public String GetManufacturerID() {
         return this.mID ;
     }
 
@@ -34,7 +34,7 @@ public class ProductInfo {
     }
 
     // Read productPrice
-    public int GetProductPrice() {
+    public String GetProductPrice() {
         return this.productPrice ;
     }
 

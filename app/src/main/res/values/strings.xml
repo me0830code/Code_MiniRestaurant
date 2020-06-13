@@ -15,8 +15,8 @@
     <string name = "secondTitle">Table\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020：</string>
     <string name = "thirdTitle">Column\u0020\u0020\u0020\u0020\u0020：</string>
     <string name = "fourthTitle">Value\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020：</string>
-    <string name = "fourthContent">Value ...</string>
+    <string name = "fourthContent"></string>
     <string name = "fifthTitle">Where</string>
-    <string name = "fifthContent">Command ...</string>
+    <string name = "fifthContent"></string>
     <string name = "buttonSendCommand">Send Command</string>
 </resources>

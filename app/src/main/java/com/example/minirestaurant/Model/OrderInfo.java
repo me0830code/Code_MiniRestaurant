@@ -3,14 +3,14 @@ package com.example.minirestaurant.Model;
 // OrderInfo Model
 public class OrderInfo {
 
-    private int oID ;
-    private int uID ;
-    private int pID ;
-    private int productAmount ;
-    private int totalPrice ;
+    private String oID ;
+    private String uID ;
+    private String pID ;
+    private String productAmount ;
+    private String totalPrice ;
 
     // Setting oID & uID & pID & productAmount & totalPrice
-    public void init(int oID, int uID, int pID, int amount, int price) {
+    public void init(String oID, String uID, String pID, String amount, String price) {
         this.oID = oID ;
         this.uID = uID ;
         this.pID = pID ;
@@ -19,27 +19,27 @@ public class OrderInfo {
     }
 
     // Read orderID
-    public int GerOrderID() {
+    public String GerOrderID() {
         return this.oID ;
     }
 
     // Read userID
-    public int GetUserID() {
+    public String GetUserID() {
         return this.uID ;
     }
 
     // Read productID
-    public int GetProductID() {
+    public String GetProductID() {
         return this.pID ;
     }
 
     // Read productAmount
-    public int GetProductAmount() {
+    public String GetProductAmount() {
         return this.productAmount ;
     }
 
     // Read totalPrice
-    public int GetTotalPrice() {
+    public String GetTotalPrice() {
         return this.totalPrice ;
     }
 }

@@ -3,13 +3,13 @@ package com.example.minirestaurant.Model ;
 // UserInfo Model
 public class UserInfo {
 
-    private int uID ;
+    private String uID ;
     private String userName ;
-    private int userAge ;
+    private String userAge ;
     private String userGender ;
 
     // Setting uID & userName & userAge & userGender
-    public void init(int uID, String name, int age, String gender) {
+    public void init(String uID, String name, String age, String gender) {
         this.uID = uID ;
         this.userName = name ;
         this.userAge = age ;
@@ -17,7 +17,7 @@ public class UserInfo {
     }
 
     // Read userID
-    public int GetUserID() {
+    public String GetUserID() {
         return this.uID ;
     }
 
@@ -27,7 +27,7 @@ public class UserInfo {
     }
 
     // Read userAge
-    public int GetUserAge() {
+    public String GetUserAge() {
         return this.userAge ;
     }
 

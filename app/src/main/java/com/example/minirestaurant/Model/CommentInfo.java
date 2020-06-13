@@ -3,14 +3,14 @@ package com.example.minirestaurant.Model;
 // CommentInfo Model
 public class CommentInfo {
 
-    private int cID ;
-    private int uID ;
+    private String cID ;
+    private String uID ;
     private String commentDate ;
     private String commentContent ;
-    private int commentRating ;
+    private String commentRating ;
 
     // Setting cID & uID & commentDate & commentContent & commentRating
-    public void init(int cID, int uID, String date, String content, int rating) {
+    public void init(String cID, String uID, String date, String content, String rating) {
         this.cID = cID ;
         this.uID = uID ;
         this.commentDate = date ;
@@ -19,12 +19,12 @@ public class CommentInfo {
     }
 
     // Read commentID
-    public int GetCommentID() {
+    public String GetCommentID() {
         return this.cID ;
     }
 
     // Read userID
-    public int GetUserID() {
+    public String GetUserID() {
         return this.uID ;
     }
 
@@ -39,7 +39,7 @@ public class CommentInfo {
     }
 
     // Read commentRating
-    public int GetCommentRating() {
+    public String GetCommentRating() {
         return this.commentRating ;
     }
 }
