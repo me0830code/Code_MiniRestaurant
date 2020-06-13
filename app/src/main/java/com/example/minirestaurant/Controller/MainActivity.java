@@ -1,8 +1,14 @@
 package com.example.minirestaurant.Controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 
 import com.example.minirestaurant.Model.ProductInfo;
 import com.example.minirestaurant.Model.ReportInfo;
@@ -10,16 +16,32 @@ import com.example.minirestaurant.R;
 import com.example.minirestaurant.Support.DBHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DBHelper myDBHelper ;
+    enum FunctionType {
+
+        Manual(""),
+        Select("Select"),
+        Insert("Insert"),
+        Update("Update"),
+        Delete("Delete"),
+        Nested("Select"),
+        Aggregate("Select") ;
+
+        public final String functionName ;
+
+        FunctionType(String functionName) {
+            this.functionName = functionName ;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState) ;
+        setContentView(R.layout.activity_main) ;
 
         this.SetInit() ;
 
@@ -56,7 +78,71 @@ public class MainActivity extends AppCompatActivity {
 
     private void SetInit() {
 
-        // Let LocalDB Bind to Current Context
-        myDBHelper = new DBHelper(this) ;
+        // Assign Function for Each Button
+        Button buttonManual = (Button) findViewById(R.id.buttonManual) ;
+        buttonManual.setOnClickListener(this) ;
+
+        Button buttonSelect = (Button) findViewById(R.id.buttonSelect) ;
+        buttonSelect.setOnClickListener(this) ;
+
+        Button buttonInsert = (Button) findViewById(R.id.buttonInsert) ;
+        buttonInsert.setOnClickListener(this) ;
+
+        Button buttonUpdate = (Button) findViewById(R.id.buttonUpdate) ;
+        buttonUpdate.setOnClickListener(this) ;
+
+        Button buttonDelete = (Button) findViewById(R.id.buttonDelete) ;
+        buttonDelete.setOnClickListener(this) ;
+
+        Button buttonNested = (Button) findViewById(R.id.buttonNested) ;
+        buttonNested.setOnClickListener(this) ;
+
+        Button buttonAggregate = (Button) findViewById(R.id.buttonAggregate) ;
+        buttonAggregate.setOnClickListener(this) ;
+    }
+
+    public void onClick(View view) {
+
+        Intent thisIntent = new Intent(MainActivity.this, DetailActivity.class) ;
+
+        switch (view.getId()) {
+
+            case R.id.buttonManual : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Manual) ;
+                break ;
+            }
+
+            case R.id.buttonSelect : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Select) ;
+                break ;
+            }
+
+            case R.id.buttonInsert : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Insert) ;
+                break ;
+            }
+
+            case R.id.buttonUpdate : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Update) ;
+                break ;
+            }
+
+            case R.id.buttonDelete : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Delete) ;
+                break ;
+            }
+
+            case R.id.buttonNested : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Nested) ;
+                break ;
+            }
+
+            case R.id.buttonAggregate : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, FunctionType.Aggregate) ;
+                break ;
+            }
+        }
+
+        startActivity(thisIntent) ;
     }
 }

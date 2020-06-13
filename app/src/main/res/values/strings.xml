@@ -1,7 +1,7 @@
 <resources>
     <string name = "app_name">MiniRestaurant</string>
 
-    <!-- Button Title For Every Feature -->
+    <!-- Button Title For Every Function -->
     <string name = "buttonManual">Using Manual</string>
     <string name = "buttonSelect">Using Select</string>
     <string name = "buttonInsert">Using Insert</string>
@@ -9,4 +9,14 @@
     <string name = "buttonDelete">Using Delete</string>
     <string name = "buttonNested">Using Nested</string>
     <string name = "buttonAggregate">Using Aggregate</string>
+
+    <!-- Title & Content For Every Info Row -->
+    <string name = "firstTitle">Function\u0020\u0020\u0020：</string>
+    <string name = "secondTitle">Table\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020：</string>
+    <string name = "thirdTitle">Column\u0020\u0020\u0020\u0020\u0020：</string>
+    <string name = "fourthTitle">Value\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020：</string>
+    <string name = "fourthContent">Value ...</string>
+    <string name = "fifthTitle">Where</string>
+    <string name = "fifthContent">Command ...</string>
+    <string name = "buttonSendCommand">Send Command</string>
 </resources>

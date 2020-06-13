@@ -7,8 +7,11 @@
     tools:context=".Controller.MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/mainLinearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,43 +23,50 @@
             android:id="@+id/buttonManual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonManual" />
+            android:text="@string/buttonManual"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonSelect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonSelect" />
+            android:text="@string/buttonSelect"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonInsert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonInsert" />
+            android:text="@string/buttonInsert"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonUpdate" />
+            android:text="@string/buttonUpdate"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonDelete" />
+            android:text="@string/buttonDelete"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonNested"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonNested" />
+            android:text="@string/buttonNested"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonAggregate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonAggregate" />
+            android:text="@string/buttonAggregate"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

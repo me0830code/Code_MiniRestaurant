@@ -16,12 +16,25 @@ import com.example.minirestaurant.Model.ReportInfo;
 import com.example.minirestaurant.Model.UserInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public enum SQLCommandType {
+    enum DictionaryKeyType {
+
+        SuccessKey("Success"),
+        DataKey("Data") ;
+
+        public final String keyName ;
+
+        DictionaryKeyType(String keyName) {
+            this.keyName = keyName ;
+        }
+    }
+
+    enum SQLCommandType {
 
         Execute,
         Query
@@ -29,25 +42,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public enum TableType {
 
-        User("UserInfo"),
-        Product("ProductInfo"),
-        Manufacturer("ManufacturerInfo"),
-        Order("OrderInfo"),
-        Comment("CommentInfo"),
-        Report("ReportInfo") ;
+        User(userTableName, new ArrayList<String>(Arrays.asList(uID, userName, userAge, userGender))),
+        Product(productTableName, new ArrayList<String>(Arrays.asList(pID, mID, productName, productPrice, productColdOrHot))),
+        Manufacturer(manufacturerTableName, new ArrayList<String>(Arrays.asList(mID, manufacturerName, manufacturerCountry, manufacturerPeopleNum))),
+        Order(orderTableName, new ArrayList<String>(Arrays.asList(oID, uID, pID, productAmount, totalPrice))),
+        Comment(commentTableName, new ArrayList<String>(Arrays.asList(cID, uID, commentDate, commentContent, commentRating))),
+        Report(reportTableName, new ArrayList<String>(Arrays.asList(cID, uID, reportDate))) ;
 
         public final String tableName ;
+        public final ArrayList<String> totalColumns ;
 
-        TableType(String name) {
-            this.tableName = name ;
+        TableType(String tableName, ArrayList<String> totalColumns) {
+            this.tableName = tableName ;
+            this.totalColumns = totalColumns ;
         }
     }
 
     private Context nowContext ;
-
-    // Keys of Return Dictionary
-    public final String successDictKey = "Success" ;
-    public final String dataDictKey = "Data" ;
 
     // --------------------- Database Setting           ---------------------
 
@@ -59,13 +70,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // --------------------- User Table Setting         ---------------------
 
     // User Table Name
-    private final String userTableName = "UserInfo" ;
+    private static final String userTableName = "UserInfo" ;
 
     // Columns for Creating User Table
-    private final String uID = "uID" ;
-    private final String userName = "Name" ;
-    private final String userAge = "Age" ;
-    private final String userGender = "Gender" ;
+    private static final String uID = "uID" ;
+    private static final String userName = "Name" ;
+    private static final String userAge = "Age" ;
+    private static final String userGender = "Gender" ;
 
     // SQL Script for Creating User Table
     // CREATE TABLE IF NOT EXISTS UserInfo ( uID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(255), Age INTEGER, Gender VARCHAR(255) ) ;
@@ -85,13 +96,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // --------------------- Product Table Setting      ---------------------
 
     // Product Table Name
-    private final String productTableName = "ProductInfo" ;
+    private static final String productTableName = "ProductInfo" ;
 
     // Columns for Creating Product Table
-    private final String pID = "pID" ;
-    private final String productName = "Name" ;
-    private final String productPrice = "Price" ;
-    private final String productColdOrHot = "ColdOrHot" ;
+    private static final String pID = "pID" ;
+    private static final String productName = "Name" ;
+    private static final String productPrice = "Price" ;
+    private static final String productColdOrHot = "ColdOrHot" ;
 
     // SQL Script for Creating Product Table
     // CREATE TABLE IF NOT EXISTS ProductInfo ( pID INTEGER PRIMARY KEY AUTOINCREMENT, mID INTEGER, Name VARCHAR(255), Price INTEGER, ColdOrHot VARCHAR(255) ) ;
@@ -112,13 +123,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // --------------------- Manufacturer Table Setting ---------------------
 
     // Manufacturer Table Name
-    private final String manufacturerTableName = "ManufacturerInfo" ;
+    private static final String manufacturerTableName = "ManufacturerInfo" ;
 
     // Columns for Creating Manufacturer Table
-    private final String mID = "mID" ;
-    private final String manufacturerName = "Name" ;
-    private final String manufacturerCountry = "Country" ;
-    private final String manufacturerPeopleNum = "PeopleNum" ;
+    private static final String mID = "mID" ;
+    private static final String manufacturerName = "Name" ;
+    private static final String manufacturerCountry = "Country" ;
+    private static final String manufacturerPeopleNum = "PeopleNum" ;
 
     // SQL Script for Creating Manufacturer Table
     // CREATE TABLE IF NOT EXISTS ManufacturerInfo ( mID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(255), Country VARCHAR(255), PeopleNum INTEGER ) ;
@@ -138,12 +149,12 @@ public class DBHelper extends SQLiteOpenHelper {
     // --------------------- Order Table Setting        ---------------------
 
     // Order Table Name
-    private final String orderTableName = "OrderInfo" ;
+    private static final String orderTableName = "OrderInfo" ;
 
     // Columns for Creating Order Table
-    private final String oID = "oID" ;
-    private final String productAmount = "Amount" ;
-    private final String totalPrice = "Price" ;
+    private static final String oID = "oID" ;
+    private static final String productAmount = "Amount" ;
+    private static final String totalPrice = "Price" ;
 
     // SQL Script for Creating Order Table
     // CREATE TABLE IF NOT EXISTS OrderInfo ( oID INTEGER PRIMARY KEY AUTOINCREMENT, uID INTEGER, pID INTEGER, Amount INTEGER, Price INTEGER ) ;
@@ -164,13 +175,13 @@ public class DBHelper extends SQLiteOpenHelper {
     // --------------------- Comment Table Setting      ---------------------
 
     // Comment Table Name
-    private final String commentTableName = "CommentInfo" ;
+    private static final String commentTableName = "CommentInfo" ;
 
     // Columns for Creating Comment Table
-    private final String cID = "cID" ;
-    private final String commentDate = "Date" ;
-    private final String commentContent = "Content" ;
-    private final String commentRating = "Rating" ;
+    private static final String cID = "cID" ;
+    private static final String commentDate = "Date" ;
+    private static final String commentContent = "Content" ;
+    private static final String commentRating = "Rating" ;
 
     // SQL Script for Creating Comment Table
     // CREATE TABLE IF NOT EXISTS CommentInfo ( cID INTEGER PRIMARY KEY AUTOINCREMENT, uID INTEGER, Date VARCHAR(255), Content VARCHAR(255), Rating INTEGER ) ;
@@ -191,10 +202,10 @@ public class DBHelper extends SQLiteOpenHelper {
     // --------------------- Report Table Setting       ---------------------
 
     // Report Table Name
-    private final String reportTableName = "ReportInfo" ;
+    private static final String reportTableName = "ReportInfo" ;
 
     // Columns for Creating Report Table
-    private final String reportDate = "Date" ;
+    private static final String reportDate = "Date" ;
 
     // SQL Script for Creating Report Table
     // CREATE TABLE IF NOT EXISTS ReportInfo ( cID INTEGER, uID INTEGER, Date VARCHAR(255), PRIMARY KEY ( cID , uID ) ) ;
@@ -349,6 +360,11 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<TableType> GetTotalTables() {
+        return new ArrayList<TableType>(Arrays.asList(TableType.User, TableType.Product, TableType.Manufacturer,
+                                                      TableType.Order, TableType.Comment, TableType.Report)) ;
+    }
+
     public Dictionary ExecuteSQLCommand(TableType tableTpe, SQLCommandType commandType, String commandSQL) {
 
         SQLiteDatabase myLocalDB ;
@@ -368,11 +384,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     myLocalDB.execSQL(commandSQL) ;
 
-                    resultDict.put(successDictKey, true) ;
+                    resultDict.put(DictionaryKeyType.SuccessKey, true) ;
                     Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Success ！", Toast.LENGTH_LONG).show() ;
                 } catch ( Exception e ) {
 
-                    resultDict.put(successDictKey, false) ;
+                    resultDict.put(DictionaryKeyType.SuccessKey, false) ;
                     Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
                 }
 
@@ -408,7 +424,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             totalUserInfos.add(eachUserInfo) ;
                         }
 
-                        resultDict.put(dataDictKey, totalUserInfos) ;
+                        resultDict.put(DictionaryKeyType.DataKey, totalUserInfos) ;
                         break ;
 
                     case Product:
@@ -431,7 +447,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             totalProductInfos.add(eachProductInfo) ;
                         }
 
-                        resultDict.put(dataDictKey, totalProductInfos) ;
+                        resultDict.put(DictionaryKeyType.DataKey, totalProductInfos) ;
                         break ;
 
                     case Manufacturer:
@@ -453,7 +469,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             totalManufacturerInfos.add((eachManufacturerInfo)) ;
                         }
 
-                        resultDict.put(dataDictKey, totalManufacturerInfos) ;
+                        resultDict.put(DictionaryKeyType.DataKey, totalManufacturerInfos) ;
                         break ;
 
                     case Order:
@@ -476,7 +492,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             totalOrderInfos.add(eachOrderInfo) ;
                         }
 
-                        resultDict.put(dataDictKey, totalOrderInfos) ;
+                        resultDict.put(DictionaryKeyType.DataKey, totalOrderInfos) ;
                         break ;
 
                     case Comment:
@@ -499,7 +515,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             totalCommentInfos.add(eachCommentInfo) ;
                         }
 
-                        resultDict.put(dataDictKey, totalCommentInfos) ;
+                        resultDict.put(DictionaryKeyType.DataKey, totalCommentInfos) ;
                         break ;
 
                     case Report:
@@ -520,7 +536,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             totalReportInfos.add(eachReportInfo) ;
                         }
 
-                        resultDict.put(dataDictKey, totalReportInfos) ;
+                        resultDict.put(DictionaryKeyType.DataKey, totalReportInfos) ;
                         break ;
                 }
 
