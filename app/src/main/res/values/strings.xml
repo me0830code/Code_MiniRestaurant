@@ -9,8 +9,8 @@
     <string name = "buttonDelete">Using Delete</string>
     <string name = "buttonIn">Using In</string>
     <string name = "buttonNotIn">Using Not In</string>
-    <string name = "buttonExist">Using Exist</string>
-    <string name = "buttonNotExist">Using Not Exist</string>
+    <string name = "buttonExists">Using Exist</string>
+    <string name = "buttonNotExists">Using Not Exist</string>
     <string name = "buttonCount">Using Count</string>
     <string name = "buttonSum">Using Sum</string>
     <string name = "buttonMax">Using Max</string>

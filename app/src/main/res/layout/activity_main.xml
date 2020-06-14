@@ -22,105 +22,105 @@
         <Button
             android:id="@+id/buttonManual"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonManual"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonSelect"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonSelect"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonInsert"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonInsert"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonUpdate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonUpdate"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonDelete"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonDelete"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonIn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonIn"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonNotIn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonNotIn"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/buttonExist"
+            android:id="@+id/buttonExists"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonExist"
+            android:layout_height="40dp"
+            android:text="@string/buttonExists"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/buttonNotExist"
+            android:id="@+id/buttonNotExists"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonNotExist"
+            android:layout_height="40dp"
+            android:text="@string/buttonNotExists"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonCount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonCount"
             android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/buttonSum"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonSum"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonMax"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonMax"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonMin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonMin"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonAvg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonAvg"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonHaving"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/buttonHaving"
             android:textAllCaps="false" />
 

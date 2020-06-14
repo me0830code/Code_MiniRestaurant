@@ -2,22 +2,13 @@ package com.example.minirestaurant.Controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
-import com.example.minirestaurant.Model.ProductInfo;
-import com.example.minirestaurant.Model.ReportInfo;
 import com.example.minirestaurant.R;
 import com.example.minirestaurant.Support.DBHelper;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Dictionary;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,19 +18,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Manual(""),
         Select("Select"),
-        Insert("Insert into"),
+        Insert("Insert Into"),
         Update("Update"),
-        Delete("Delete from"),
-        In(""),
-        NotIn(""),
-        Exist(""),
-        NotExist(""),
-        Count(""),
-        Sum(""),
-        Max(""),
-        Min(""),
-        Avg(""),
-        Having("") ;
+        Delete("Delete From"),
+        In("Select * From UserInfo Where uID In (1, 3, 5) ;"),
+        NotIn("Select * From UserInfo Where uID Not In (1, 3, 5) ;"),
+        Exists("Select * From UserInfo Where Exists ( Select * From ProductInfo Where pID = 1 ) ;"),
+        NotExists("Select * From UserInfo Where Not Exists ( Select * From ProductInfo Where pID = 100 ) ;"),
+        Count("Select Count(Age) From UserInfo ;"),
+        Sum("Select Sum(Age) From UserInfo ;"),
+        Max("Select Max(Age) From UserInfo ;"),
+        Min("Select Min(Age) From UserInfo ;"),
+        Avg("Select Avg(Age) From UserInfo ;"),
+        Having("Select uID, Age From UserInfo Group By uID Having Age > 50 ;") ;
 
 
 
@@ -88,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonNotIn = (Button) findViewById(R.id.buttonNotIn) ;
         buttonNotIn.setOnClickListener(this) ;
 
-        Button buttonExist = (Button) findViewById(R.id.buttonExist) ;
-        buttonExist.setOnClickListener(this) ;
+        Button buttonExists = (Button) findViewById(R.id.buttonExists) ;
+        buttonExists.setOnClickListener(this) ;
 
-        Button buttonNotExist = (Button) findViewById(R.id.buttonNotExist) ;
-        buttonNotExist.setOnClickListener(this) ;
+        Button buttonNotExists = (Button) findViewById(R.id.buttonNotExists) ;
+        buttonNotExists.setOnClickListener(this) ;
 
         Button buttonCount = (Button) findViewById(R.id.buttonCount) ;
         buttonCount.setOnClickListener(this) ;
@@ -154,13 +145,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break ;
             }
 
-            case R.id.buttonExist : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Exist) ;
+            case R.id.buttonExists: {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Exists) ;
                 break ;
             }
 
-            case R.id.buttonNotExist : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.NotExist) ;
+            case R.id.buttonNotExists: {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.NotExists) ;
                 break ;
             }
 

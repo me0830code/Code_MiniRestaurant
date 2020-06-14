@@ -96,8 +96,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         Button buttonSendCommand = (Button) findViewById(R.id.buttonSendCommand) ;
         buttonSendCommand.setOnClickListener(this) ;
 
-        ListView dataListView = (ListView) findViewById(R.id.dataListView) ;
-
         // Setting UI Components
         switch (thisModeType) {
 
@@ -152,7 +150,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 fourthContent.setClickable(false) ;
                 break ;
 
-            case Nested:
+            default:
+
+                // Clean Text of this SQL Mode
+                firstContent.setText("") ;
 
                 // Close Table Spinner
                 secondContent.setEnabled(false) ;
@@ -168,30 +169,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 fourthContent.setClickable(false) ;
 
                 // Close Command Input
-                fifthTitle.setText("Default Nested Command") ;
-                fifthContent.setText("Nested") ;
-                fifthContent.setEnabled(false) ;
-                fifthContent.setClickable(false) ;
-                break ;
-
-            case Aggregate:
-
-                // Close Table Spinner
-                secondContent.setEnabled(false) ;
-                secondContent.setClickable(false) ;
-                secondContentData.clear() ;
-
-                // Close Column Spinner
-                thirdContent.setEnabled(false) ;
-                thirdContent.setClickable(false) ;
-
-                // Close Value Input
-                fourthContent.setEnabled(false) ;
-                fourthContent.setClickable(false) ;
-
-                // Close Command Input
-                fifthTitle.setText("Default Aggregate Command");
-                fifthContent.setText("Aggregate") ;
+                fifthTitle.setText("Default Input Command") ;
+                fifthContent.setText(thisModeType.modeSQLName) ;
                 fifthContent.setEnabled(false) ;
                 fifthContent.setClickable(false) ;
                 break ;
@@ -305,6 +284,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         tempStr = tempStr.split("WHERE")[0] ;
                     }
 
+                    if (tempStr.contains("GROUP")) {
+                        tempStr = tempStr.split("GROUP")[0] ;
+                    }
+
                     tempStr = tempStr.replace(" ", "") ;
                     tableName = tempStr.split(";")[0] ;
                     Log.d("_FROM2", tableName) ;
@@ -362,7 +345,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         // Clean User Input
-        fifthContent.setText("") ;
+        if (fifthContent.isEnabled()) { fifthContent.setText("") ; }
 
         Log.d("_SQL", thisSQLCommand) ;
 

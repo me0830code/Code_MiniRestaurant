@@ -467,6 +467,18 @@ public class DBHelper extends SQLiteOpenHelper {
                             String thisUID = myCursor.getColumnIndex(uID) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(uID))) : "" ;
                             String thisName = myCursor.getColumnIndex(userName) >= 0 ? myCursor.getString(myCursor.getColumnIndex(userName)) : "" ;
                             String thisAge = myCursor.getColumnIndex(userAge) >= 0 ? String.valueOf(myCursor.getInt(myCursor.getColumnIndex(userAge))) : "" ;
+
+                            if (thisAge.length() == 0) {
+                                if (myCursor.getColumnCount() > 0) {
+
+                                    if (myCursor.getColumnIndex("Count(Age)") >= 0) { thisAge = String.valueOf(myCursor.getInt(myCursor.getColumnIndex("Count(Age)")) + " (Count)") ; }
+                                    else if (myCursor.getColumnIndex("Sum(Age)") >= 0) { thisAge = String.valueOf(myCursor.getInt(myCursor.getColumnIndex("Sum(Age)")) + " (Sum)") ; }
+                                    else if (myCursor.getColumnIndex("Max(Age)") >= 0) { thisAge = String.valueOf(myCursor.getInt(myCursor.getColumnIndex("Max(Age)")) + " (Max)") ; }
+                                    else if (myCursor.getColumnIndex("Min(Age)") >= 0) { thisAge = String.valueOf(myCursor.getInt(myCursor.getColumnIndex("Min(Age)")) + " (Min)") ; }
+                                    else if (myCursor.getColumnIndex("Avg(Age)") >= 0) { thisAge = String.valueOf(myCursor.getInt(myCursor.getColumnIndex("Avg(Age)")) + " (Avg)") ; }
+                                }
+                            }
+
                             String thisGender = myCursor.getColumnIndex(userGender) >= 0 ? myCursor.getString(myCursor.getColumnIndex(userGender)) : "" ;
 
                             UserInfo eachUserInfo = new UserInfo() ;
