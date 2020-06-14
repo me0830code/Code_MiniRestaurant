@@ -367,9 +367,45 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void AssignDefaultData() {
+
+        // UserInfo
+        for (int index = 0 ; index < 10 ; index++) {
+            String command = "Insert into UserInfo (uID, Name, Age, Gender) Values ( " + (index+1) + ", " + "\"User_" + (index+1) + "\"" + ", " + Math.random()*100 + ", \"Male\" ) ;" ;
+            this.ExecuteSQLCommand(TableType.User, SQLCommandType.Execute, command, false) ;
+        }
+
+        // ProductInfo
+        for (int index = 0 ; index < 10 ; index++) {
+            String command = "Insert into ProductInfo (pID, mID, Name, Price, ColdOrHot) Values ( " + (index+1) + ", " + Math.random()*10 + ", " + "\"Product_" + (index+1) + "\"" + ", " + Math.random()*500 + ", \"Cold\" ) ;" ;
+            this.ExecuteSQLCommand(TableType.Product, SQLCommandType.Execute, command, false) ;
+        }
+
+        // ManufacturerInfo
+        for (int index = 0 ; index < 10 ; index++) {
+            String command = "Insert into ManufacturerInfo (mID, Name, Country, PeopleNum) Values ( " + (index+1) + ", " + "\"Manufacturer_" + (index+1) + "\"" + ", " + "\"Country_" + (index+1) + "\"" + ", " + Math.random()*1000 + " ) ;" ;
+            this.ExecuteSQLCommand(TableType.Manufacturer, SQLCommandType.Execute, command, false) ;
+        }
+
+        // OrderInfo
+        for (int index = 0 ; index < 10 ; index++) {
+            String command = "Insert into OrderInfo (oID, uID, pID, Amount, Price) Values ( " + (index+1) + ", " + Math.random()*10 + ", " + Math.random()*10 + ", " + Math.random()*10 + ", " + Math.random()*500 + " ) ;" ;
+            this.ExecuteSQLCommand(TableType.Order, SQLCommandType.Execute, command, false) ;
+        }
+
+        // CommentInfo
+        for (int index = 0 ; index < 10 ; index++) {
+            String command = "Insert into CommentInfo (cID, uID, Date, Content, Rating) Values ( " + (index+1) + ", " + Math.random()*10 + ", " + "\"2020-06-1" + index + "\"" + ", " + "\"Content_" + (index+1) + "\"" + ", " + Math.random()*100 + " ) ;" ;
+            this.ExecuteSQLCommand(TableType.Comment, SQLCommandType.Execute, command, false) ;
+        }
+
+        // ReportInfo
+        for (int index = 0 ; index < 10 ; index++) {
+            String command = "Insert into ReportInfo (cID, uID, Date) Values ( " + (index+1) + ", " + Math.random()*10 + ", " + "\"2020-06-1" + index + "\"" + ") ;" ;
+            this.ExecuteSQLCommand(TableType.Report, SQLCommandType.Execute, command, false) ;
+        }
     }
 
-    public Dictionary ExecuteSQLCommand(TableType tableType, SQLCommandType commandType, String commandSQL) {
+    public Dictionary ExecuteSQLCommand(TableType tableType, SQLCommandType commandType, String commandSQL, Boolean showMessage) {
 
         SQLiteDatabase myLocalDB ;
         Cursor myCursor ;
@@ -389,11 +425,17 @@ public class DBHelper extends SQLiteOpenHelper {
                     myLocalDB.execSQL(commandSQL) ;
 
                     resultDict.put(DictionaryKeyType.SuccessKey, true) ;
-                    Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Success ！", Toast.LENGTH_LONG).show() ;
+
+                    if (showMessage) {
+                        Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Success ！", Toast.LENGTH_LONG).show() ;
+                    }
                 } catch ( Exception e ) {
 
                     resultDict.put(DictionaryKeyType.SuccessKey, false) ;
-                    Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
+
+                    if (showMessage) {
+                        Toast.makeText(this.nowContext, "Execute " + commandType.name() + " Fail :\n\n" + e.toString(), Toast.LENGTH_LONG).show() ;
+                    }
                 }
 
                 myLocalDB.close() ;

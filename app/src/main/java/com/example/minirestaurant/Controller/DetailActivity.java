@@ -62,9 +62,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         // Let LocalDB Bind to Current Context
         myDBHelper = new DBHelper(this) ;
 
-        // Assign Default Data
-        myDBHelper.AssignDefaultData() ;
-
         // Binding All UI Components
         TextView firstTitle = (TextView) findViewById(R.id.firstTitle) ;
         TextView firstContent = (TextView) findViewById(R.id.firstContent) ;
@@ -370,7 +367,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         Log.d("_SQL", thisSQLCommand) ;
 
         // Send SQL Command
-        Dictionary resultDict = myDBHelper.ExecuteSQLCommand(thisTableType, thisSQLCommandType, thisSQLCommand) ;
+        Dictionary resultDict = myDBHelper.ExecuteSQLCommand(thisTableType, thisSQLCommandType, thisSQLCommand, true) ;
 
         if (thisSQLCommandType == DBHelper.SQLCommandType.Query) {
 
@@ -392,7 +389,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             Log.d("_SQL_Dict", resultDict.get(DBHelper.DictionaryKeyType.SuccessKey).toString()) ;
 
             // Send SQL Command
-            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(thisTableType, DBHelper.SQLCommandType.Query, "Select * From " + thisTableType.tableName + " ;") ;
+            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(thisTableType, DBHelper.SQLCommandType.Query, "Select * From " + thisTableType.tableName + " ;", true) ;
 
             // Show Data of Current Selected Table
             ShowDataTable(resultValue, thisTableType) ;
@@ -408,7 +405,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             Spinner secondContent = (Spinner) findViewById(R.id.secondContent) ;
 
             // Send SQL Command
-            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(totalTables.get(secondContent.getSelectedItemPosition()), DBHelper.SQLCommandType.Query, "Select * From " + totalTables.get(secondContent.getSelectedItemPosition()).tableName + " ;") ;
+            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(totalTables.get(secondContent.getSelectedItemPosition()), DBHelper.SQLCommandType.Query, "Select * From " + totalTables.get(secondContent.getSelectedItemPosition()).tableName + " ;", true) ;
 
             // Show Data of Current Selected Table
             ShowDataTable(resultValue, totalTables.get(secondContent.getSelectedItemPosition())) ;

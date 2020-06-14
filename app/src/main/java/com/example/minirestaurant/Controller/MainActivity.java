@@ -21,6 +21,8 @@ import java.util.Dictionary;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private DBHelper myDBHelper ;
+
     enum ModeType {
 
         Manual(""),
@@ -77,6 +79,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void SetInit() {
+
+        // Let LocalDB Bind to Current Context
+        myDBHelper = new DBHelper(this) ;
+
+        // Assign Default Data
+        myDBHelper.AssignDefaultData() ;
 
         // Assign Function for Each Button
         Button buttonManual = (Button) findViewById(R.id.buttonManual) ;
