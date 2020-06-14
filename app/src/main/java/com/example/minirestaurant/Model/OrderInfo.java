@@ -19,7 +19,7 @@ public class OrderInfo {
     }
 
     // Read orderID
-    public String GerOrderID() {
+    public String GetOrderID() {
         return this.oID ;
     }
 

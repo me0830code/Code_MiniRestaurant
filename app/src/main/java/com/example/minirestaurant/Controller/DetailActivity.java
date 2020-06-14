@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -19,6 +20,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.minirestaurant.Model.CommentInfo;
+import com.example.minirestaurant.Model.ManufacturerInfo;
+import com.example.minirestaurant.Model.OrderInfo;
+import com.example.minirestaurant.Model.ProductInfo;
+import com.example.minirestaurant.Model.ReportInfo;
 import com.example.minirestaurant.Model.UserInfo;
 import com.example.minirestaurant.R;
 import com.example.minirestaurant.Support.DBHelper;
@@ -26,6 +32,7 @@ import com.example.minirestaurant.Support.DBHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
@@ -88,6 +95,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         Button buttonSendCommand = (Button) findViewById(R.id.buttonSendCommand) ;
         buttonSendCommand.setOnClickListener(this) ;
+
+        ListView dataListView = (ListView) findViewById(R.id.dataListView) ;
 
         // Setting UI Components
         switch (thisModeType) {
@@ -289,19 +298,28 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         if (thisSQLCommandType == DBHelper.SQLCommandType.Query) {
 
+            // Show Data of Current Selected Table
+            ShowDataTable(resultDict, totalTables.get(secondContent.getSelectedItemPosition())) ;
+
             ArrayList<UserInfo> res = (ArrayList<UserInfo>) resultDict.get(DBHelper.DictionaryKeyType.DataKey) ;
 
-            if (res.size() > 0) {
-                Log.d("_SQL_Dict", "有東西") ;
-                Log.d("_SQL_1", res.get(0).GetUserID()) ;
-                Log.d("_SQL_2", res.get(0).GetUserName()) ;
-                Log.d("_SQL_3", res.get(0).GetUserAge()) ;
-                Log.d("_SQL_4", res.get(0).GetUserGender()) ;
-            } else {
-                Log.d("_SQL_Dict", "沒東西") ;
-            }
+//            if (res.size() > 0) {
+//                Log.d("_SQL_Dict", "有東西: " + res.size()) ;
+//                Log.d("_SQL_1", "ID: " + res.get(0).GetUserID()) ;
+//                Log.d("_SQL_2", "Name: " + res.get(0).GetUserName()) ;
+//                Log.d("_SQL_3", "Age: " + res.get(0).GetUserAge()) ;
+//                Log.d("_SQL_4", "Gender: " + res.get(0).GetUserGender()) ;
+//            } else {
+//                Log.d("_SQL_Dict", "沒東西") ;
+//            }
         } else {
             Log.d("_SQL_Dict", resultDict.get(DBHelper.DictionaryKeyType.SuccessKey).toString()) ;
+
+            // Send SQL Command
+            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(totalTables.get(secondContent.getSelectedItemPosition()), DBHelper.SQLCommandType.Query, "Select * From " + totalTables.get(secondContent.getSelectedItemPosition()).tableName + " ;") ;
+
+            // Show Data of Current Selected Table
+            ShowDataTable(resultValue, totalTables.get(secondContent.getSelectedItemPosition())) ;
         }
 
         // Update Showing ListView
@@ -310,6 +328,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
         if (parent.getId() == R.id.secondContent) {
+
+            Spinner secondContent = (Spinner) findViewById(R.id.secondContent) ;
+
+            // Send SQL Command
+            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(totalTables.get(secondContent.getSelectedItemPosition()), DBHelper.SQLCommandType.Query, "Select * From " + totalTables.get(secondContent.getSelectedItemPosition()).tableName + " ;") ;
+
+            // Show Data of Current Selected Table
+            ShowDataTable(resultValue, totalTables.get(secondContent.getSelectedItemPosition())) ;
 
             // Only Select & Update Can Choose Column
             if (thisModeType == MainActivity.ModeType.Select || thisModeType == MainActivity.ModeType.Update) {
@@ -341,5 +367,140 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         InputMethodManager myKeyboard = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE) ;
         myKeyboard.hideSoftInputFromWindow(view.getWindowToken(), 0) ;
+    }
+
+    private void ShowDataTable(Dictionary resultValue, DBHelper.TableType thisTableType) {
+
+        ArrayAdapter<String> dataSurce = new ArrayAdapter(this, android.R.layout.simple_list_item_1) ;
+        ListView dataListView = (ListView) findViewById(R.id.dataListView) ;
+
+        switch (thisTableType) {
+
+            case User:
+
+                ArrayList<UserInfo> totalUserInfos = (ArrayList<UserInfo>) resultValue.get(DBHelper.DictionaryKeyType.DataKey) ;
+
+                for (int index = 0 ; index < totalUserInfos.size() ; index ++) {
+
+                    UserInfo eachUserInfo = totalUserInfos.get(index) ;
+
+                    String thisUID = eachUserInfo.GetUserID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachUserInfo.GetUserID() : "" ;
+                    String thisName = eachUserInfo.GetUserName().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachUserInfo.GetUserName() : "" ;
+                    String thisAge = eachUserInfo.GetUserAge().length() > 0 ? "\n" + thisTableType.totalColumns.get(2) + ": " + eachUserInfo.GetUserAge() : "" ;
+                    String thisGender = eachUserInfo.GetUserGender().length() > 0 ? "\n" + thisTableType.totalColumns.get(3) + ": " + eachUserInfo.GetUserGender() : "" ;
+
+                    String thisData = "[ " + (index + 1) + " ]\n" + thisUID + thisName + thisAge + thisGender ;
+
+                    dataSurce.add(thisData) ;
+                }
+
+                break ;
+
+            case Product:
+
+                ArrayList<ProductInfo> totalProductInfos = (ArrayList<ProductInfo>) resultValue.get(DBHelper.DictionaryKeyType.DataKey) ;
+
+                for (int index = 0 ; index < totalProductInfos.size() ; index ++) {
+
+                    ProductInfo eachProductInfo = totalProductInfos.get(index) ;
+
+                    String thisPID = eachProductInfo.GetProductID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachProductInfo.GetProductID() : "" ;
+                    String thisMID = eachProductInfo.GetManufacturerID().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachProductInfo.GetManufacturerID() : "" ;
+                    String thisName = eachProductInfo.GetProductName().length() > 0 ? "\n" + thisTableType.totalColumns.get(2) + ": " + eachProductInfo.GetProductName() : "" ;
+                    String thisPrice = eachProductInfo.GetProductPrice().length() > 0 ? "\n" + thisTableType.totalColumns.get(3) + ": " + eachProductInfo.GetProductPrice() : "" ;
+                    String thisColdOrHot = eachProductInfo.GetProductColdOrHot().length() > 0 ? "\n" + thisTableType.totalColumns.get(4) + ": " + eachProductInfo.GetProductColdOrHot() : "" ;
+
+                    String thisData = "[ " + (index + 1) + " ]\n" + thisPID + thisMID + thisName + thisPrice + thisColdOrHot ;
+
+                    dataSurce.add(thisData) ;
+                }
+
+                break ;
+
+            case Manufacturer:
+
+                ArrayList<ManufacturerInfo> totalManufacturerInfos = (ArrayList<ManufacturerInfo>) resultValue.get(DBHelper.DictionaryKeyType.DataKey) ;
+
+                for (int index = 0 ; index < totalManufacturerInfos.size() ; index ++) {
+
+                    ManufacturerInfo eachManufacturerInfo = totalManufacturerInfos.get(index) ;
+
+                    String thisMID = eachManufacturerInfo.GetManufacturerID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachManufacturerInfo.GetManufacturerID() : "" ;
+                    String thisName = eachManufacturerInfo.GetManufacturerName().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachManufacturerInfo.GetManufacturerName() : "" ;
+                    String thisCountry = eachManufacturerInfo.GetManufacturerCountry().length() > 0 ? "\n" + thisTableType.totalColumns.get(2) + ": " + eachManufacturerInfo.GetManufacturerCountry() : "" ;
+                    String thisPeopleNum = eachManufacturerInfo.GetManufacturerPeopleNum().length() > 0 ? "\n" + thisTableType.totalColumns.get(3) + ": " + eachManufacturerInfo.GetManufacturerPeopleNum() : "" ;
+
+                    String thisData = "[ " + (index + 1) + " ]\n" + thisMID + thisName + thisCountry + thisPeopleNum ;
+
+                    dataSurce.add(thisData) ;
+                }
+
+                break ;
+
+            case Order:
+
+                ArrayList<OrderInfo> totalOrderInfos = (ArrayList<OrderInfo>) resultValue.get(DBHelper.DictionaryKeyType.DataKey) ;
+
+                for (int index = 0 ; index < totalOrderInfos.size() ; index ++) {
+
+                    OrderInfo eachOrderInfo = totalOrderInfos.get(index) ;
+
+                    String thisOID = eachOrderInfo.GetOrderID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachOrderInfo.GetOrderID() : "" ;
+                    String thisUID = eachOrderInfo.GetUserID().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachOrderInfo.GetUserID() : "" ;
+                    String thisPID = eachOrderInfo.GetProductID().length() > 0 ? "\n" + thisTableType.totalColumns.get(2) + ": " + eachOrderInfo.GetProductID() : "" ;
+                    String thisAmount = eachOrderInfo.GetProductAmount().length() > 0 ? "\n" + thisTableType.totalColumns.get(3) + ": " + eachOrderInfo.GetProductAmount() : "" ;
+                    String thisPrice = eachOrderInfo.GetTotalPrice().length() > 0 ? "\n" + thisTableType.totalColumns.get(4) + ": " + eachOrderInfo.GetTotalPrice() : "" ;
+
+                    String thisData = "[ " + (index + 1) + " ]\n" + thisOID + thisUID + thisPID + thisAmount + thisPrice ;
+
+                    dataSurce.add(thisData) ;
+                }
+
+                break ;
+
+            case Comment:
+
+                ArrayList<CommentInfo> totalCommentInfos = (ArrayList<CommentInfo>) resultValue.get(DBHelper.DictionaryKeyType.DataKey) ;
+
+                for (int index = 0 ; index < totalCommentInfos.size() ; index ++) {
+
+                    CommentInfo eachCommentInfo = totalCommentInfos.get(index) ;
+
+                    String thisCID = eachCommentInfo.GetCommentID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachCommentInfo.GetCommentID() : "" ;
+                    String thisUID = eachCommentInfo.GetUserID().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachCommentInfo.GetUserID() : "" ;
+                    String thisDate = eachCommentInfo.GetCommentDate().length() > 0 ? "\n" + thisTableType.totalColumns.get(2) + ": " + eachCommentInfo.GetCommentDate() : "" ;
+                    String thisContent = eachCommentInfo.GetCommentContent().length() > 0 ? "\n" + thisTableType.totalColumns.get(3) + ": " + eachCommentInfo.GetCommentContent() : "" ;
+                    String thisRating = eachCommentInfo.GetCommentRating().length() > 0 ? "\n" + thisTableType.totalColumns.get(4) + ": " + eachCommentInfo.GetCommentRating() : "" ;
+
+                    String thisData = "[ " + (index + 1) + " ]\n" + thisCID + thisUID + thisDate + thisContent + thisRating ;
+
+                    dataSurce.add(thisData) ;
+                }
+
+                break ;
+
+            case Report:
+
+                ArrayList<ReportInfo> totalReportInfos = (ArrayList<ReportInfo>) resultValue.get(DBHelper.DictionaryKeyType.DataKey) ;
+
+                for (int index = 0 ; index < totalReportInfos.size() ; index ++) {
+
+                    ReportInfo eachReportInfo = totalReportInfos.get(index) ;
+
+
+                    String thisCID = eachReportInfo.GetCommentID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachReportInfo.GetCommentID() : "" ;
+                    String thisUID = eachReportInfo.GetUserID().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachReportInfo.GetUserID() : "" ;
+                    String thisDate = eachReportInfo.GetReportDate().length() > 0 ? "\n" + thisTableType.totalColumns.get(2) + ": " + eachReportInfo.GetReportDate() : "" ;
+
+                    String thisData = "[ " + (index + 1) + " ]\n" + thisCID + thisUID + thisDate ;
+
+                    dataSurce.add(thisData) ;
+                }
+
+                break ;
+        }
+
+        // Assign Data Source to ListView
+        dataListView.setAdapter(dataSurce) ;
     }
 }
