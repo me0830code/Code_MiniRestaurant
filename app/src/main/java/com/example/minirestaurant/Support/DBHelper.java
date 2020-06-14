@@ -366,6 +366,9 @@ public class DBHelper extends SQLiteOpenHelper {
                                                       TableType.Order, TableType.Comment, TableType.Report)) ;
     }
 
+    public void AssignDefaultData() {
+    }
+
     public Dictionary ExecuteSQLCommand(TableType tableType, SQLCommandType commandType, String commandSQL) {
 
         SQLiteDatabase myLocalDB ;

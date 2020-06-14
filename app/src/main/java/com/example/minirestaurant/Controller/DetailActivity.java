@@ -62,6 +62,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         // Let LocalDB Bind to Current Context
         myDBHelper = new DBHelper(this) ;
 
+        // Assign Default Data
+        myDBHelper.AssignDefaultData() ;
+
         // Binding All UI Components
         TextView firstTitle = (TextView) findViewById(R.id.firstTitle) ;
         TextView firstContent = (TextView) findViewById(R.id.firstContent) ;
@@ -208,9 +211,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         EditText fifthContent = (EditText) findViewById(R.id.fifthContent) ;
 
         // Setting SQL Command
-        DBHelper.SQLCommandType thisSQLCommandType ;
+        DBHelper.TableType thisTableType = null ;
+        DBHelper.SQLCommandType thisSQLCommandType = null ;
 
-        String thisSQLCommand ;
+        String thisSQLCommand = "" ;
 
         String whichTable = secondContent.getSelectedItemPosition() >= 0 ?
                 secondContent.getSelectedItem().toString() : "" ;
@@ -221,6 +225,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         switch (thisModeType) {
 
             case Select:
+
+                thisTableType = totalTables.get(secondContent.getSelectedItemPosition()) ;
 
                 thisSQLCommandType = DBHelper.SQLCommandType.Query ;
 
@@ -237,6 +243,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
             case Insert:
 
+                thisTableType = totalTables.get(secondContent.getSelectedItemPosition()) ;
+
                 thisSQLCommandType = DBHelper.SQLCommandType.Execute ;
 
                 // Insert into [Table] ( Column1, ... ) Values ( Value1, ...) ;
@@ -244,6 +252,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break ;
 
             case Update:
+
+                thisTableType = totalTables.get(secondContent.getSelectedItemPosition()) ;
 
                 thisSQLCommandType = DBHelper.SQLCommandType.Execute ;
 
@@ -260,6 +270,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
             case Delete:
 
+                thisTableType = totalTables.get(secondContent.getSelectedItemPosition()) ;
+
                 thisSQLCommandType = DBHelper.SQLCommandType.Execute ;
 
                 // Delete from [Table] Where [Condition] ;
@@ -273,6 +285,70 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break ;
 
             default :
+
+                Log.d("_Hello", "Hello") ;
+
+                Log.d("_fif?", fifthContent.getText().toString()) ;
+
+                if (fifthContent.getText().toString().length() == 0) { break ; }
+
+                String tableName = "" ;
+                String inputCommand = fifthContent.getText().toString().toUpperCase() ;
+
+                if (inputCommand.contains("FROM")) {
+
+                    // Select [Column] From [Table] Where [Condition] ;
+                    // Delete from [Table] Where [Condition] ;
+                    String tempStr = inputCommand.split("FROM")[1] ;
+                    Log.d("_FROM1", tempStr) ;
+
+                    // where -> ;
+
+                    if (tempStr.contains("WHERE")) {
+                        tempStr = tempStr.split("WHERE")[0] ;
+                    }
+
+                    tempStr = tempStr.replace(" ", "") ;
+                    tableName = tempStr.split(";")[0] ;
+                    Log.d("_FROM2", tableName) ;
+                } else if (inputCommand.contains("UPDATE")) {
+
+                    // Update [Table] Set [Column] = [Value] Where [Condition] ;
+                    String tempStr = inputCommand.split("UPDATE")[1] ;
+                    Log.d("_Update1", tempStr) ;
+
+                    tempStr = tempStr.split("SET")[0] ;
+                    tableName = tempStr.replace(" ", "") ;
+                    Log.d("_Update2", tableName) ;
+                } else if (inputCommand.contains("INTO")) {
+
+                    // Insert into [Table] ( Column1, ... ) Values ( Value1, ...) ;
+                    String tempStr = inputCommand.split("INTO")[1] ;
+                    Log.d("into1", tempStr) ;
+
+                    tempStr = tempStr.split("\\(")[0] ;
+                    tableName = tempStr.replace(" ", "") ;
+                    Log.d("into2", tableName) ;
+                }
+
+                Log.d("_Com", thisSQLCommand) ;
+                Log.d("_Cut", tableName) ;
+
+                if (tableName.equalsIgnoreCase(DBHelper.TableType.User.tableName)) {
+                    thisTableType = DBHelper.TableType.User ;
+                } else if (tableName.equalsIgnoreCase(DBHelper.TableType.Product.tableName)) {
+                    thisTableType = DBHelper.TableType.Product ;
+                } else if (tableName.equalsIgnoreCase(DBHelper.TableType.Manufacturer.tableName)) {
+                    thisTableType = DBHelper.TableType.Manufacturer ;
+                } else if (tableName.equalsIgnoreCase(DBHelper.TableType.Order.tableName)) {
+                    thisTableType = DBHelper.TableType.Order ;
+                } else if (tableName.equalsIgnoreCase(DBHelper.TableType.Comment.tableName)) {
+                    thisTableType = DBHelper.TableType.Comment ;
+                } else if (tableName.equalsIgnoreCase(DBHelper.TableType.Report.tableName)) {
+                    thisTableType = DBHelper.TableType.Report ;
+                }
+
+                Log.d("_Type", thisTableType.toString()) ;
 
                 thisSQLCommandType = fifthContent.getText().toString().split(" ")[0].equalsIgnoreCase("Select") ?
                         DBHelper.SQLCommandType.Query : DBHelper.SQLCommandType.Execute ;
@@ -294,14 +370,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         Log.d("_SQL", thisSQLCommand) ;
 
         // Send SQL Command
-        Dictionary resultDict = myDBHelper.ExecuteSQLCommand(totalTables.get(secondContent.getSelectedItemPosition()), thisSQLCommandType, thisSQLCommand) ;
+        Dictionary resultDict = myDBHelper.ExecuteSQLCommand(thisTableType, thisSQLCommandType, thisSQLCommand) ;
 
         if (thisSQLCommandType == DBHelper.SQLCommandType.Query) {
 
             // Show Data of Current Selected Table
-            ShowDataTable(resultDict, totalTables.get(secondContent.getSelectedItemPosition())) ;
+            ShowDataTable(resultDict, thisTableType) ;
 
-            ArrayList<UserInfo> res = (ArrayList<UserInfo>) resultDict.get(DBHelper.DictionaryKeyType.DataKey) ;
+//            ArrayList<UserInfo> res = (ArrayList<UserInfo>) resultDict.get(DBHelper.DictionaryKeyType.DataKey) ;
 
 //            if (res.size() > 0) {
 //                Log.d("_SQL_Dict", "有東西: " + res.size()) ;
@@ -316,10 +392,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             Log.d("_SQL_Dict", resultDict.get(DBHelper.DictionaryKeyType.SuccessKey).toString()) ;
 
             // Send SQL Command
-            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(totalTables.get(secondContent.getSelectedItemPosition()), DBHelper.SQLCommandType.Query, "Select * From " + totalTables.get(secondContent.getSelectedItemPosition()).tableName + " ;") ;
+            Dictionary resultValue = myDBHelper.ExecuteSQLCommand(thisTableType, DBHelper.SQLCommandType.Query, "Select * From " + thisTableType.tableName + " ;") ;
 
             // Show Data of Current Selected Table
-            ShowDataTable(resultValue, totalTables.get(secondContent.getSelectedItemPosition())) ;
+            ShowDataTable(resultValue, thisTableType) ;
         }
 
         // Update Showing ListView
@@ -486,7 +562,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 for (int index = 0 ; index < totalReportInfos.size() ; index ++) {
 
                     ReportInfo eachReportInfo = totalReportInfos.get(index) ;
-
 
                     String thisCID = eachReportInfo.GetCommentID().length() > 0 ? "\n" + thisTableType.totalColumns.get(0) + ": " + eachReportInfo.GetCommentID() : "" ;
                     String thisUID = eachReportInfo.GetUserID().length() > 0 ? "\n" + thisTableType.totalColumns.get(1) + ": " + eachReportInfo.GetUserID() : "" ;
