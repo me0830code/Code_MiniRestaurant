@@ -55,17 +55,73 @@
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/buttonNested"
+            android:id="@+id/buttonIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonNested"
+            android:text="@string/buttonIn"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/buttonAggregate"
+            android:id="@+id/buttonNotIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buttonAggregate"
+            android:text="@string/buttonNotIn"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonExist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonExist"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonNotExist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNotExist"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonCount"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/buttonSum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonSum"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonMax"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonMin"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonAvg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonAvg"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/buttonHaving"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonHaving"
             android:textAllCaps="false" />
 
     </LinearLayout>

@@ -30,8 +30,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Insert("Insert into"),
         Update("Update"),
         Delete("Delete from"),
-        Nested(""),
-        Aggregate("") ;
+        In(""),
+        NotIn(""),
+        Exist(""),
+        NotExist(""),
+        Count(""),
+        Sum(""),
+        Max(""),
+        Min(""),
+        Avg(""),
+        Having("") ;
+
+
 
         public final String modeSQLName ;
 
@@ -46,36 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main) ;
 
         this.SetInit() ;
-
-//        String find = "SELECT * FROM ReportInfo" ;
-//        Dictionary temp1 = myDBHelper.ExecuteSQLCommand(DBHelper.TableType.Report, DBHelper.SQLCommandType.Query, find) ;
-//        ArrayList<ReportInfo> res1 = (ArrayList<ReportInfo>) temp1.get(myDBHelper.dataDictKey) ;
-//
-//        String find2 = "SELECT * FROM ProductInfo" ;
-//        Dictionary temp2 = myDBHelper.ExecuteSQLCommand(DBHelper.TableType.Product, DBHelper.SQLCommandType.Query, find2) ;
-//        ArrayList<ProductInfo> res2 = (ArrayList<ProductInfo>) temp1.get(myDBHelper.dataDictKey) ;
-//
-//        String command = "INSERT INTO ReportInfo (cID, uID, Date) VALUES ( \"1\", \"2\", \"Hello world :)\") ;" ;
-//        Dictionary temp3 = myDBHelper.ExecuteSQLCommand(DBHelper.TableType.Report, DBHelper.SQLCommandType.Execute, command) ;
-//        Boolean res3 = (Boolean) temp3.get(myDBHelper.successDictKey) ;
-//
-//        String command2 = "INSERT INTO ProductInfo (pID, mID, Name, Price, ColdOrHot) VALUES ( 1, 2, \"AAAA\", 100, \"冷\")" ;
-//        Dictionary temp4 = myDBHelper.ExecuteSQLCommand(DBHelper.TableType.Product, DBHelper.SQLCommandType.Execute, command2) ;
-//        Boolean res4 = (Boolean) temp4.get(myDBHelper.successDictKey) ;
-//
-//        Dictionary temp5 = myDBHelper.ExecuteSQLCommand(DBHelper.TableType.Report, DBHelper.SQLCommandType.Query, find) ;
-//        ArrayList<ReportInfo> res5 = (ArrayList<ReportInfo>) temp5.get(myDBHelper.dataDictKey) ;
-//
-//        Dictionary temp6 = myDBHelper.ExecuteSQLCommand(DBHelper.TableType.Product, DBHelper.SQLCommandType.Query, find2) ;
-//        ArrayList<ProductInfo> res6 = (ArrayList<ProductInfo>) temp6.get(myDBHelper.dataDictKey) ;
-//
-//        Log.d("_1", String.valueOf(res1.size())) ;
-//        Log.d("_2", String.valueOf(res2.size())) ;
-//        Log.d("_3", res3.toString()) ;
-//        Log.d("_4", res4.toString()) ;
-//        Log.d("_5", String.valueOf(res5.size()) + res5.get(0).GetReportDate()) ;
-//        Log.d("_6", String.valueOf(res6.size()) + res6.get(0).GetProductName()) ;
-
     }
 
     private void SetInit() {
@@ -102,11 +82,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button buttonDelete = (Button) findViewById(R.id.buttonDelete) ;
         buttonDelete.setOnClickListener(this) ;
 
-        Button buttonNested = (Button) findViewById(R.id.buttonNested) ;
-        buttonNested.setOnClickListener(this) ;
+        Button buttonIn = (Button) findViewById(R.id.buttonIn) ;
+        buttonIn.setOnClickListener(this) ;
 
-        Button buttonAggregate = (Button) findViewById(R.id.buttonAggregate) ;
-        buttonAggregate.setOnClickListener(this) ;
+        Button buttonNotIn = (Button) findViewById(R.id.buttonNotIn) ;
+        buttonNotIn.setOnClickListener(this) ;
+
+        Button buttonExist = (Button) findViewById(R.id.buttonExist) ;
+        buttonExist.setOnClickListener(this) ;
+
+        Button buttonNotExist = (Button) findViewById(R.id.buttonNotExist) ;
+        buttonNotExist.setOnClickListener(this) ;
+
+        Button buttonCount = (Button) findViewById(R.id.buttonCount) ;
+        buttonCount.setOnClickListener(this) ;
+
+        Button buttonSum = (Button) findViewById(R.id.buttonSum) ;
+        buttonSum.setOnClickListener(this) ;
+
+        Button buttonMax = (Button) findViewById(R.id.buttonMax) ;
+        buttonMax.setOnClickListener(this) ;
+
+        Button buttonMin = (Button) findViewById(R.id.buttonMin) ;
+        buttonMin.setOnClickListener(this) ;
+
+        Button buttonAvg = (Button) findViewById(R.id.buttonAvg) ;
+        buttonAvg.setOnClickListener(this) ;
+
+        Button buttonHaving = (Button) findViewById(R.id.buttonHaving) ;
+        buttonHaving.setOnClickListener(this) ;
     }
 
     public void onClick(View view) {
@@ -140,13 +144,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break ;
             }
 
-            case R.id.buttonNested : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Nested) ;
+            case R.id.buttonIn : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.In) ;
                 break ;
             }
 
-            case R.id.buttonAggregate : {
-                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Aggregate) ;
+            case R.id.buttonNotIn : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.NotIn) ;
+                break ;
+            }
+
+            case R.id.buttonExist : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Exist) ;
+                break ;
+            }
+
+            case R.id.buttonNotExist : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.NotExist) ;
+                break ;
+            }
+
+            case R.id.buttonCount : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Count) ;
+                break ;
+            }
+
+            case R.id.buttonSum : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Sum) ;
+                break ;
+            }
+
+            case R.id.buttonMax : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Max) ;
+                break ;
+            }
+
+            case R.id.buttonMin : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Min) ;
+                break ;
+            }
+
+            case R.id.buttonAvg : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Avg) ;
+                break ;
+            }
+
+            case R.id.buttonHaving : {
+                thisIntent.putExtra(DetailActivity.intentKeyString, ModeType.Having) ;
                 break ;
             }
         }
