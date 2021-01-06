@@ -2,7 +2,7 @@
 Date : 109 / 06 / 14
 
 # Motivation & Purpose
-Homework for Database Management Class at National Cheng Kung University - Computer Science Department
+Homework - Database Management Class at National Cheng Kung University, Computer Science Department
 
 1. Database Management
 2. SQLite
