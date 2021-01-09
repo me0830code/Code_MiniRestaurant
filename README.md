@@ -1,5 +1,5 @@
 # MiniRestaurant
-Date : 109 / 06 / 14
+Date : 2020 / 06 / 14
 
 # Motivation & Purpose
 Homework - Database Management Class at National Cheng Kung University, Computer Science Department
@@ -18,16 +18,13 @@ Button Mode
 ![](https://i.imgur.com/ENaeXhu.gif)
 
 # ER Diagram
-
-![](https://i.imgur.com/YvtaLFF.png)
+<img src = "https://i.imgur.com/YvtaLFF.png" width = "700" />
 
 # Relation Schema After 3NF ( Third Normal Form )
-
-![](https://i.imgur.com/PvbK7wq.png)
+<img src = "https://i.imgur.com/PvbK7wq.png" width = "700" />
 
 # All Tables Schema
-
-![](https://i.imgur.com/EBOAalH.png)
+<img src = "https://i.imgur.com/EBOAalH.png" width = "700" />
 
 # Contacts
 Chien-Yu Yeh
